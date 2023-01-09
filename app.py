@@ -25,9 +25,9 @@ def get_prediction():
         jdata = request.get_json()
         qdf=pd.DataFrame(jdata)
         pred=model.predict(qdf)
-    return "Survives" if pred == 1 else "Dies :)"
+    return "Survives" if pred == 1 else "Dies"
 
 
 if __name__ == '__main__':
     load_model()
-    app.run(port=5000, debug=True)
+    app.run(host='0.0.0.0',port=8080)
