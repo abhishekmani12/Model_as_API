@@ -4,30 +4,30 @@ from sklearn.ensemble import GradientBoostingClassifier
 import pickle as pkl
 import pandas as pd
 
-model = None
 app = Flask(__name__)
+
 
 
 def load_model():
     global model
     with open('gbmodel.pkl', 'rb') as f:
         model = pkl.load(f)
-
+        
+load_model()
 
 @app.route('/')
 def home_endpoint():
     return 'hello'
 
 
-@app.route('/pred', methods=['POST'])
+@app.route('/pred', methods=['GET'])
 def get_prediction():
-    if request.method == 'POST':
+    if request.method == 'GET':
         jdata = request.get_json()
         qdf=pd.DataFrame(jdata)
         pred=model.predict(qdf)
-    return "Survives" if pred == 1 else "Dies"
-
+        send="Survives" if pred == 1 else "Dies"
+    return jsonify(send)
 
 if __name__ == '__main__':
-    load_model()
-    app.run(host='0.0.0.0',port=8080)
+    app.run(host='0.0.0.0',port=5000, debug=True)
