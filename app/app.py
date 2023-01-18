@@ -24,6 +24,8 @@ def home_endpoint():
 def get_prediction():
     if (request.method == 'GET') or (request.method == 'POST'):
         jdata = request.get_json()
+        if jdata == None:
+            return ({"Error":"None"})
         qdf=pd.DataFrame(jdata)
         pred=model.predict(qdf)
         send="Survives" if pred == 1 else "Dies"
